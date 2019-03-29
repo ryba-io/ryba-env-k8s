@@ -4,7 +4,6 @@
 /conf/config
 /conf/server.pid
 /conf/user*
-/conf/Vagrantfile
 /cache/*
 /yarn.lock
 !.gitignore

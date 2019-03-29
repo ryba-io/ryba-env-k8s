@@ -1,0 +1,69 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+
+box = "centos/7"
+
+Vagrant.configure("2") do |config|
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.ssh.insert_key = false
+  config.vm.box_check_update = false
+  config.vm.provider :virtualbox do |vb|
+    config.vbguest.no_remote = true
+    config.vbguest.auto_update = false
+  end
+  # config.vm.provider :libvirt do |p|
+  #   p.nested = true
+  # end
+  config.vm.define :master do |node|
+    node.vm.box = box
+    node.vm.network :private_network, ip: "10.10.10.51"
+    node.vm.network :forwarded_port, guest: 22, host: 24051, auto_correct: true
+    node.vm.provider "virtualbox" do |d|
+      d.customize ["modifyvm", :id, "--memory", 2560]
+      d.customize ["modifyvm", :id, "--cpus", 2]
+      d.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+  end
+  config.vm.define :node01 do |node|
+    node.vm.box = box
+    node.vm.network :private_network, ip: "10.10.10.52"
+    node.vm.network :forwarded_port, guest: 22, host: 24052, auto_correct: true
+    node.vm.provider "virtualbox" do |d|
+      d.customize ["modifyvm", :id, "--memory", 2560]
+      d.customize ["modifyvm", :id, "--cpus", 2]
+      d.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+  end
+  config.vm.define :node02 do |node|
+    node.vm.box = box
+    node.vm.network :private_network, ip: "10.10.10.53"
+    node.vm.network :forwarded_port, guest: 22, host: 24053, auto_correct: true
+    node.vm.provider "virtualbox" do |d|
+      d.customize ["modifyvm", :id, "--memory", 2560]
+      d.customize ["modifyvm", :id, "--cpus", 2]
+      d.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+  end
+  config.vm.define :node03 do |node|
+    node.vm.box = box
+    node.vm.network :private_network, ip: "10.10.10.54"
+    node.vm.network :forwarded_port, guest: 22, host: 24054, auto_correct: true
+    node.vm.provider "virtualbox" do |d|
+      d.customize ["modifyvm", :id, "--memory", 2560]
+      d.customize ["modifyvm", :id, "--cpus", 2]
+      d.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+  end
+  config.vm.define :edge do |node|
+    node.vm.box = box
+    node.vm.network :private_network, ip: "10.10.10.58"
+    node.vm.network :forwarded_port, guest: 22, host: 24058, auto_correct: true
+    node.vm.provider "virtualbox" do |d|
+      d.customize ["modifyvm", :id, "--memory", 2560]
+      d.customize ["modifyvm", :id, "--cpus", 2]
+      d.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+  end
+end
